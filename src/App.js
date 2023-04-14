@@ -1,4 +1,12 @@
-import { BrowserRouter, Routes, Route, Link, useParams } from 'react-router-dom';
+import {
+  BrowserRouter,
+  Routes,
+  Route,
+  Link,
+  useParams,
+  useNavigate,
+  useLocation,
+} from 'react-router-dom';
 import './App.css';
 
 function Home() {
@@ -8,16 +16,18 @@ function Home() {
 }
 
 function Categories() {
+  console.log(useLocation());
+  console.log(window.location);
   return (
     <>
       <h1>Categories</h1>
       <table>
-        <th>
+        <thead>
           <tr>
-            <td>Id</td>
-            <td>Category</td>
+            <th>Id</th>
+            <th>Category</th>
           </tr>
-        </th>
+        </thead>
         <tbody>
           <tr>
             <td>1</td>
@@ -43,6 +53,17 @@ function About() {
   )
 }
 
+function Login() {
+  const navigate = useNavigate();
+
+  return (
+    <>
+      <h1>Login</h1>
+      <button onClick={() => navigate('/') }>Submit</button>
+    </>
+  )
+}
+
 function App() {
   return (
     <BrowserRouter>
@@ -56,12 +77,16 @@ function App() {
         <li>
           <Link to="/about">About</Link>
         </li>
+        <li>
+          <Link to="/login">Login</Link>
+        </li>
       </ul>
       <Routes>
         <Route path='/' element={<Home />} />
         <Route path='/categories' element={<Categories />} />
         <Route path='/categories/:id' element={<CategoriesDetail />} />
         <Route path='/about' element={<About />} />
+        <Route path='/login' element={<Login />} />
       </Routes>
     </BrowserRouter>
   );
