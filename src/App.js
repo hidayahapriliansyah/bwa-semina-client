@@ -1,3 +1,4 @@
+import React from 'react';
 import {
   BrowserRouter,
   Routes,
@@ -7,6 +8,7 @@ import {
   useNavigate,
   useLocation,
 } from 'react-router-dom';
+import PageSignin from './pages/signin';
 import './App.css';
 
 function Home() {
@@ -15,9 +17,16 @@ function Home() {
   )
 }
 
+function useQuery() {
+  const { search } = useLocation();
+
+  return React.useMemo(() => new URLSearchParams(search), [search]);
+};
+
 function Categories() {
-  console.log(useLocation());
-  console.log(window.location);
+  const query = useQuery();
+
+  console.log(query.get('page'));
   return (
     <>
       <h1>Categories</h1>
@@ -80,13 +89,16 @@ function App() {
         <li>
           <Link to="/login">Login</Link>
         </li>
+        <li>
+          <Link to="/signin">Signin</Link>
+        </li>
       </ul>
       <Routes>
         <Route path='/' element={<Home />} />
         <Route path='/categories' element={<Categories />} />
         <Route path='/categories/:id' element={<CategoriesDetail />} />
         <Route path='/about' element={<About />} />
-        <Route path='/login' element={<Login />} />
+        <Route path='/signin' element={<PageSignin />} />
       </Routes>
     </BrowserRouter>
   );
