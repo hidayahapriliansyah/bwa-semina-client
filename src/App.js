@@ -17,14 +17,14 @@ function Home() {
 function App() {
   return (
     <BrowserRouter>
-      <ul>
+      {/* <ul>
         <li>
           <Link to="/">Home</Link>
         </li>
         <li>
           <Link to="/signin">Signin</Link>
         </li>
-      </ul>
+      </ul> */}
       <Routes>
         <Route path='/' element={<Home />} />
         <Route path='/signin' element={<PageSignin />} />
