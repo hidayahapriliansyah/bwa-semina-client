@@ -1,14 +1,15 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Navigate } from 'react-router-dom';
 import axios from 'axios';
 
 import { Card, Container } from 'react-bootstrap';
-import Form from 'react-bootstrap/Form';
-import TextInputWithLabel from '../../components/TextInputWithLabel';
-import SButton from '../../components/Button';
 import SAlert from '../../components/Alert';
+import { config } from '../../configs';
+import SForm from './form';
 
 function PageSignin() {
+  const token = localStorage.getItem('token');
+
   const [form, setForm] = useState({
     email: '',
     password: '',
@@ -31,15 +32,13 @@ function PageSignin() {
     setIsLoading(true);
     try {
       const res = await axios.post(
-        'http://localhost:9000/api/v1/cms/auth/signin',
-        {
-          email: form.email,
-          password: form.password,
-        }
-        );
-        
-        setIsLoading(false);
-        navigate('/');
+        `${config.api_host_dev}/cms/auth/signin`,
+        form,
+      );
+
+      localStorage.setItem('token', res.data.data.token);
+      setIsLoading(false);
+      navigate('/');
     } catch (err) {
       setIsLoading(false);
       setAlert({
@@ -50,6 +49,7 @@ function PageSignin() {
     }
   };
 
+  if (token) return <Navigate to='/' replace={true} />;
 
   return (
     <Container md={12} className='my-5'>
@@ -60,35 +60,12 @@ function PageSignin() {
         <Card.Body>
           <Card.Title className='text-center'>Form Signin</Card.Title>
         </Card.Body>
-        <Form>
-          <TextInputWithLabel 
-            label='Email address'
-            name="email"
-            value={form.email}
-            type="email"
-            placeholder="Enter email"
-            onChange={handleChange}
-          />
-
-          <TextInputWithLabel 
-            label='Password'
-            name="password"
-            value={form.password}
-            type="password"
-            placeholder="Password"
-            onChange={handleChange}
-          />
-
-          <SButton 
-            loading={isLoading}
-            disabled={isLoading}
-            action={handleSubmit}
-            variant="primary"
-            type="submit"
-          >
-          Submit
-          </SButton>
-        </Form>
+        <SForm
+          form={form}
+          isLoading={isLoading}
+          handleChange={handleChange}
+          handleSubmit={handleSubmit}
+        />
       </Card>
     </Container>
   );
