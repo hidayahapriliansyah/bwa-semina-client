@@ -12,7 +12,6 @@ import SNavbar from '../../components/Navbar';
 export default function PageCategories() {
   const navigate = useNavigate();
   const token = localStorage.getItem('token');
-  console.log(token);
 
   const [data, setData] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
