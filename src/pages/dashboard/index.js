@@ -1,8 +1,9 @@
 import React from 'react'
 import { Navigate } from 'react-router-dom';
-import { Container, Nav, Navbar, Breadcrumb, Table } from 'react-bootstrap';
+import { Container, Table } from 'react-bootstrap';
 import SButton from '../../components/Button';
 import SBreadcrumb from '../../components/Breadcrumb';
+import SNavbar from '../../components/Navbar';
 
 export default function Dahsboard() {
   const token = localStorage.getItem('token');
@@ -11,26 +12,10 @@ export default function Dahsboard() {
   
   return (
     <>
-      <Navbar bg="dark" variant="dark">
-        <Container>
-          <Navbar.Brand href="#home">Navbar</Navbar.Brand>
-          <Nav className="me-auto">
-            <Nav.Link href="#home">Home</Nav.Link>
-            <Nav.Link href="#features">Features</Nav.Link>
-            <Nav.Link href="#pricing">Pricing</Nav.Link>
-          </Nav>
-        </Container>
-      </Navbar>
-
+      <SNavbar />
       <Container className='mt-3'>
-        {/* <Breadcrumb>
-          <Breadcrumb.Item active>Home</Breadcrumb.Item>
-        </Breadcrumb> */}
-
-        <SBreadcrumb textSecond={'Categories'} />
-
+        <SBreadcrumb />
         <SButton>Tambah</SButton>
-
         <Table className='mt-3' striped variant='dark'>
           <thead>
             <tr>

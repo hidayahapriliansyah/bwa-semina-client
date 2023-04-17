@@ -7,6 +7,7 @@ import {
 import PageSignin from './pages/signin';
 import './App.css';
 import Dahsboard from './pages/dashboard';
+import PageCategories from './pages/categories';
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
       <Routes>
         <Route path='/' element={<Dahsboard />} />
         <Route path='/signin' element={<PageSignin />} />
+        <Route path='/categories' element={<PageCategories />} />
       </Routes>
     </BrowserRouter>
   );
