@@ -4,7 +4,7 @@ import axios from 'axios';
 import { config } from '../../configs';
 
 import { Navigate } from 'react-router-dom';
-import { Container, Table } from 'react-bootstrap';
+import { Container, Table, Spinner } from 'react-bootstrap';
 import SButton from '../../components/Button';
 import SBreadcrumb from '../../components/Breadcrumb';
 import SNavbar from '../../components/Navbar';
@@ -14,28 +14,30 @@ export default function PageCategories() {
   console.log(token);
 
   const [data, setData] = useState([]);
-  
-  
+  const [isLoading, setIsLoading] = useState(false);
+
   useEffect(() => {
     const getCategoriesAPI = async () => {
+      setIsLoading(true);
       try {
         const res = await axios.get(`${config.api_host_dev}/cms/categories`, {
           headers: {
             Authorization: `Bearer ${token}`,
           }
         });
-        
-        setData(res.data.data);
-        console.log('data');
-        console.log(data);
+        setTimeout(() => {
+          setData(res.data.data);
+          setIsLoading(false);
+        }, 2000);
       } catch (err) {
+        setIsLoading(false);
         console.log('err');
         console.log(err);
       }
     };
 
     getCategoriesAPI();
-  }, [data]);
+  }, []);
 
   if (!token) return <Navigate to='/signin' replace={true} />;
   
@@ -48,30 +50,22 @@ export default function PageCategories() {
         <Table className='mt-3' striped variant='dark'>
           <thead>
             <tr>
-              <th>#</th>
-              <th>First Name</th>
-              <th>Last Name</th>
-              <th>Username</th>
+              <th>No.</th>
+              <th>Name</th>
+              <th>Action</th>
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td>1</td>
-              <td>Mark</td>
-              <td>Otto</td>
-              <td>@mdo</td>
-            </tr>
-            <tr>
-              <td>2</td>
-              <td>Jacob</td>
-              <td>Thornton</td>
-              <td>@fat</td>
-            </tr>
-            <tr>
-              <td>3</td>
-              <td colSpan={2}>Larry the Bird</td>
-              <td>@twitter</td>
-            </tr>
+            {isLoading
+              ? <Spinner animation="border" variant="dark" />
+              : data.map((data, index) => (
+                <tr key={index}>
+                  <td>{index + 1}</td>
+                  <td>{data.name}</td>
+                  <td>Otto</td>
+                </tr>
+              ))
+            }
           </tbody>
         </Table>
       </Container>
