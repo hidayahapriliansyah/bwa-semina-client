@@ -6,9 +6,9 @@ import SBreadcrumb from '../../components/Breadcrumb';
 import SNavbar from '../../components/Navbar';
 
 export default function Dahsboard() {
-  const token = localStorage.getItem('token');
+  // const token = localStorage.getItem('auth');
 
-  if (!token) return <Navigate to='/signin' replace={true} />;
+  // if (!token) return <Navigate to='/signin' replace={true} />;
   
   return (
     <>

@@ -10,8 +10,14 @@ import Dahsboard from './pages/dashboard';
 import PageCategories from './pages/categories';
 import CategoryEdit from './pages/categories/edit';
 import CategoryCreate from './pages/categories/create';
+import { useEffect } from 'react';
+import { listen } from './redux/listener';
 
 function App() {
+  useEffect(() => {
+    // ieumah ngadon siga ngakalan bug redux nu teu ngesave manehanana 
+    listen();
+  }, []);
   return (
     <BrowserRouter>
       <Routes>

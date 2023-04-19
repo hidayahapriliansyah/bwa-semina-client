@@ -1,14 +1,18 @@
 import { useState } from 'react';
 import { useNavigate, Navigate } from 'react-router-dom';
-import axios from 'axios';
+import { useDispatch } from 'react-redux';
+import { userLogin } from '../../redux/auth/actions';
+import { postData } from '../../utils/fetch';
 
 import { Card, Container } from 'react-bootstrap';
 import SAlert from '../../components/Alert';
-import { config } from '../../configs';
 import SForm from './form';
 
+
+
 function PageSignin() {
-  const token = localStorage.getItem('token');
+  const dispatch = useDispatch();
+  const token = localStorage.getItem('auth');
 
   const [form, setForm] = useState({
     email: '',
@@ -31,12 +35,10 @@ function PageSignin() {
   const handleSubmit = async () => {
     setIsLoading(true);
     try {
-      const res = await axios.post(
-        `${config.api_host_dev}/cms/auth/signin`,
-        form,
-      );
-
-      localStorage.setItem('token', res.data.data.token);
+      const res = await postData('/cms/auth/signin', form);
+      
+      dispatch(userLogin(res.data.data.token, res.data.data.role));
+      // localStorage.setItem('auth', JSON.stringify(res.data.data));
       setIsLoading(false);
       navigate('/');
     } catch (err) {
