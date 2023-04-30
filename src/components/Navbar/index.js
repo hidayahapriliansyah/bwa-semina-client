@@ -1,24 +1,106 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { Navbar, Container, Nav } from 'react-bootstrap';
 import NavAccess from '../NavAccess';
 import { useNavigate } from 'react-router-dom';
+import {
+  accessCategories,
+  accessTalents,
+  accessEvents,
+  accessParticipant,
+  accessPayments,
+  accessOrders,
+} from '../../const/access';
 
-export default function SNavbar() {
+function SNavbar() {
   const navigate = useNavigate();
+  const [role, setRole] = useState(null);
+
+  useEffect(() => {
+    const fetchData = () => {
+      let { role } = localStorage.getItem('auth')
+        ? JSON.parse(localStorage.getItem('auth'))
+        : {};
+
+      setRole(role);
+    };
+    fetchData();
+  }, []);
+
+  const handleLogout = () => {
+    localStorage.clear();
+    window.location.href = '/login';
+  };
 
   return (
     <Navbar bg="dark" variant="dark">
     <Container>
-      <Navbar.Brand href="#home">Navbar</Navbar.Brand>
+      <Navbar.Brand href="#home">Dashboard</Navbar.Brand>
       <Nav className="me-auto">
-        <NavAccess action={() => navigate('/')}>Home</NavAccess>
-        <NavAccess action={() => navigate('/categories')}>Categories</NavAccess>
-        <NavAccess action={() => navigate('/talents')}>Talents</NavAccess>
-        <NavAccess action={() => navigate('/events')}>Events</NavAccess>
-        <NavAccess action={() => navigate('/participants')}>Participants</NavAccess>
-        <NavAccess action={() => navigate('/transactions')}>Transactions</NavAccess>
+        <NavAccess
+          role={role}
+          roles={accessCategories.lihat}
+          action={() => navigate('/')}
+          >
+          Home
+        </NavAccess>
+        <NavAccess
+          role={role}
+          roles={accessCategories.lihat}
+          action={() => navigate('/categories')}
+        >
+          Categories
+        </NavAccess>
+        <NavAccess
+          role={role}
+          roles={accessTalents.lihat}
+          action={() => navigate('/talents')}
+        >
+          Talents
+        </NavAccess>
+        <NavAccess
+          role={role}
+          roles={accessPayments.lihat}
+          action={() => navigate('/payments')}
+        >
+          Payment
+        </NavAccess>
+        {/* <NavAccess
+          role={role}
+          roles={organizers.lihat}
+          action={() => navigate('/organizers')}
+          >
+          Organizer
+        </NavAccess> */}
+        <NavAccess
+          role={role}
+          roles={accessEvents.lihat}
+          action={() => navigate('/events')}
+        >
+          Events
+        </NavAccess>
+        <NavAccess
+          role={role}
+          roles={accessParticipant.lihat}
+          action={() => navigate('/participant')}
+        >
+          Participant
+        </NavAccess>
+        <NavAccess
+          role={role}
+          roles={accessOrders.lihat}
+          action={() => navigate('/orders')}
+        >
+          Orders
+        </NavAccess>
+      </Nav>
+      <Nav className='justify-content-end'>
+        <Nav.Link onClick={() => handleLogout()}>
+          Logout
+        </Nav.Link>
       </Nav>
     </Container>
   </Navbar>
   )
-}
+};
+
+export default SNavbar;
