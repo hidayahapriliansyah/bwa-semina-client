@@ -1,19 +1,17 @@
 import React, { useState } from 'react';
-import axios from 'axios';
-
-import { config } from '../../configs';
-
 import { Container } from 'react-bootstrap';
 import SBreadcrumb from '../../components/Breadcrumb';
 import SAlert from '../../components/Alert';
 import Form from './form';
+import { postData } from '../../utils/fetch';
 import { useNavigate } from 'react-router-dom';
-import SNavbar from '../../components/Navbar';
+import { useDispatch } from 'react-redux';
+import { setNotif } from '../../redux/notif/actions';
 
 function CategoryCreate() {
-  const token = localStorage.getItem('token');
   const navigate = useNavigate();
-  
+  const dispatch = useDispatch()
+
   const [form, setForm] = useState({
     name: '',
   });
@@ -27,19 +25,22 @@ function CategoryCreate() {
   const [isLoading, setIsLoading] = useState(false);
 
   const handleChange = (e) => {
-    setForm({...form, [e.target.name]: e.target.value});
+    setForm({ ...form, [e.target.name]: e.target.value });
   };
 
   const handleSubmit = async () => {
     setIsLoading(true);
     try {
-      await axios.post(`${config.api_host_dev}/cms/categories`, form, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      navigate('/categories');
+      const res = await postData('/cms/categories', form);
+      dispatch(
+        setNotif(
+            true,
+            'success',
+            `berhasil tambah kategori ${res.data.data.name}`,
+          )
+      );
       setIsLoading(false);
+      navigate('/categories');
     } catch (err) {
       setIsLoading(false);
       setAlert({
@@ -49,26 +50,45 @@ function CategoryCreate() {
         message: err.response.data.msg,
       });
     }
+    // versi if else. Aapakah ini deprecated?
+    // const res = await postData('/cms/categories', form);
+    // if (res?.data?.data) {
+    //   // dispatch(
+    //     // setNotif(
+    //       //   true,
+    //       //   'success',
+    //       //   `berhasil tambah kategori ${res.data.data.name}`,
+    //       // )
+    //       // );
+    //       setIsLoading(false);
+    //       navigate('/categories');
+    // } else {
+    //   console.log('true handleSubmitRunning');
+    //   setIsLoading(false);
+    //   setAlert({
+    //     ...alert,
+    //     status: true,
+    //     type: 'danger',
+    //     message: res.response.data.msg,
+    //   });
+    // }
   };
 
   return (
-    <>
-      <SNavbar />
-      <Container>
-        <SBreadcrumb
-          textSecond={'Categories'}
-          urlSecond={'/categories'}
-          textThird={'Create'}
-        />
-        {alert.status && <SAlert type={alert.type} message={alert.message} />}
-        <Form
-          form={form}
-          isLoading={isLoading}
-          handleChange={handleChange}
-          handleSubmit={handleSubmit}
-        />
-      </Container>
-    </>
+    <Container>
+      <SBreadcrumb
+        textSecond={'Categories'}
+        urlSecond={'/categories'}
+        textThird={'Create'}
+      />
+      {alert.status && <SAlert type={alert.type} message={alert.message} />}
+      <Form
+        form={form}
+        isLoading={isLoading}
+        handleChange={handleChange}
+        handleSubmit={handleSubmit}
+      />
+    </Container>
   );
 };
 

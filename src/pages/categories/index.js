@@ -16,7 +16,7 @@ export default function PageCategories() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  // const notif = useSelector((state) => state.notif);
+  const notif = useSelector((state) => state.notif);
   const categories = useSelector((state) => state.categories);
   const [access, setAccess] = useState({
     tambah: false,
@@ -90,9 +90,9 @@ export default function PageCategories() {
         </Button>
       )}
 
-      {/* { notif.status && (
+      { notif.status && (
         <SAlert type={notif.typeNotif} message={notif.message} />
-      )} */}
+      )}
 
       <Table
         status={categories.status}
