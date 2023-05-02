@@ -31,14 +31,14 @@ function TableWithAction({
           customAction={customAction}
         />
       </Table>
-      {/* {!withoutPagination && data.length
-        ? (
-          <Pagination pages={pages} handlePageClick={handlePageClick} />
-        )
-        : (
-          ''
-        )
-      } */}
+      {!withoutPagination && data.length
+        // ? (
+        //   <Pagination pages={pages} handlePageClick={handlePageClick} />
+        // )
+        // : (
+        //   ''
+        // )
+      }
     </>
   );
 };
