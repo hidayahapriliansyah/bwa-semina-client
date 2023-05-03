@@ -50,7 +50,7 @@ function TalentsPage() {
 
   useEffect(() => {
     dispatch(fetchTalents());
-  }, [dispatch]);
+  }, [dispatch, talents.keyword]);
 
   const handleDelete = (id) => {
     Swal.fire({
@@ -86,7 +86,9 @@ function TalentsPage() {
 
       <SearchInput
         query={talents.keyword}
-        handleChange={(e) => dispatch(setKeyword(e.target.value))}
+        handleChange={(e) => {
+          dispatch(setKeyword(e.target.value))
+        }}
       />
       {notif.status && (
         <AlertMessage type={notif.typeNotif} message={notif.message} />
