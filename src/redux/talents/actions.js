@@ -43,9 +43,6 @@ export const fetchTalents = () => {
         keyword: getState().talents.keyword,
       };
 
-      console.log('fetchTalents params');
-      console.log(params);
-
       let res = await debounceFetchTalents('/cms/talents', params);
 
       res.data.data.forEach((res) => {

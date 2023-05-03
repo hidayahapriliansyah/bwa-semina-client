@@ -31,12 +31,15 @@ function TalentEdit() {
   const fetchOneCategories = async () => {
     const res = await getData(`/cms/talents/${talentId}`);
 
+    console.log('res.data.data')
+    console.log(res.data.data)
+
     setForm({
       ...form,
       name: res.data.data.name,
       role: res.data.data.role,
-      avatar: res.data.data.avatar,
-      file: res.data.data.file,
+      avatar: res.data.data.image.name,
+      file: res.data.data.image._id,
     });
   };
 
@@ -47,12 +50,12 @@ function TalentEdit() {
   const uploadImage = async (file) => {
     let formData = new FormData();
     formData.append('avatar', file);
-    const res = await postData('/cms/image', formData, true);
+    const res = await postData('/cms/images', formData, true);
     return res;
   };
 
   const handleChange = async (e) => {
-    if (e.targe.name === 'avatar') {
+    if (e.target.name === 'avatar') {
       if (e?.target?.files[0].type === 'image/jpg'
         || e?.target?.files[0].type === 'image/png'
         || e?.target?.files[0].type === 'image/jpeg'
@@ -102,9 +105,9 @@ function TalentEdit() {
     setIsLoading(true);
 
     const payload = {
-      image: '',
-      role: '',
-      name: '',
+      image: form.file,
+      role: form.role,
+      name: form.name,
     };
 
     const res = await putData(`/cms/talents/${talentId}`, payload);
