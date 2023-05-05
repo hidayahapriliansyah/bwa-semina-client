@@ -18,7 +18,6 @@ function EventsCreate() {
   const lists = useSelector((state) => state.lists);
   const [form, setForm] = useState({
     title: '',
-    price: '',
     date: '',
     file: '',
     avatar: '',
@@ -26,17 +25,14 @@ function EventsCreate() {
     venueName: '',
     tagline: '',
     keyPoint: [''],
-    tickets: [
-      {
-        type: '',
-        status: '',
-        stock: '',
-        price: '',
-      },
-    ],
+    tickets: [{
+      type: '',
+      status: '',
+      stock: '',
+      price: ''
+    }],
     category: '',
     talent: '',
-    stock: '',
   });
 
   const [alert, setAlert] = useState({

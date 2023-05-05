@@ -64,7 +64,7 @@ function TalentsPage() {
       cancelButtonText: 'Batal',
     }).then(async (result) => {
       if (result.isConfirmed) {
-        const res = await deleteData(`/cms/talent/${id}`);
+        const res = await deleteData(`/cms/talents/${id}`);
 
         dispatch(
           setNotif(true, 'success', `berhasil hapus speaker ${res.data.data.name}`)

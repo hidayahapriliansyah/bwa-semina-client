@@ -1,18 +1,20 @@
 import React, { useState, useEffect } from 'react';
 import { Container } from 'react-bootstrap';
 import SBreadcrumb from '../../components/Breadcrumb';
-import Form from './form';
 import SAlert from '../../components/Alert';
-import { getData, postData, putData } from '../../utils/fetch';
-import { useNavigate, useParams } from 'react-router-dom';
+import Form from './form';
+import { postData } from '../../utils/fetch';
+import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { setNotif } from '../../redux/notif/actions';
+import {
+  fetchingListsCategories,
+  fetchingListsTalents,
+} from '../../redux/lists/actions';
 
-function TalentEdit() {
-  const { talentId } = useParams();
+function TalentsCreate() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-
   const [form, setForm] = useState({
     name: '',
     role: '',
@@ -28,27 +30,13 @@ function TalentEdit() {
 
   const [isLoading, setIsLoading] = useState(false);
 
-  const fetchOneCategories = async () => {
-    const res = await getData(`/cms/talents/${talentId}`);
-
-    console.log('res.data.data')
-    console.log(res.data.data)
-
-    setForm({
-      ...form,
-      name: res.data.data.name,
-      role: res.data.data.role,
-      avatar: res.data.data.image.name,
-      file: res.data.data.image._id,
-    });
-  };
-
   useEffect(() => {
-    fetchOneCategories();
-  }, []);
+    dispatch(fetchingListsCategories());
+    dispatch(fetchingListsTalents());
+  }, [dispatch]);
 
   const uploadImage = async (file) => {
-    let formData = new FormData();
+    const formData = new FormData();
     formData.append('avatar', file);
     const res = await postData('/cms/images', formData, true);
     return res;
@@ -56,18 +44,19 @@ function TalentEdit() {
 
   const handleChange = async (e) => {
     if (e.target.name === 'avatar') {
-      if (e?.target?.files[0].type === 'image/jpg'
-        || e?.target?.files[0].type === 'image/png'
-        || e?.target?.files[0].type === 'image/jpeg'
+      if (
+        e?.target?.files[0]?.type === 'image/jpg' ||
+        e?.target?.files[0]?.type === 'image/png' ||
+        e?.target?.files[0]?.type === 'image/jpeg'
       ) {
-        var size = parseFloat(e.target.files[0].size /3145728).toFixed(2);
+        var size = parseFloat(e.target.files[0].size / 3145728).toFixed(2);
 
         if (size > 2) {
           setAlert({
             ...alert,
             status: true,
             type: 'danger',
-            message: 'Please select image less than 3 MB',
+            message: 'Please select image size less than 3 MB',
           });
           setForm({
             ...form,
@@ -88,7 +77,7 @@ function TalentEdit() {
           ...alert,
           status: true,
           type: 'danger',
-          message: 'Type image png | jpg | png',
+          message: 'type image png | jpg | jpeg',
         });
         setForm({
           ...form,
@@ -110,13 +99,16 @@ function TalentEdit() {
       name: form.name,
     };
 
-    const res = await putData(`/cms/talents/${talentId}`, payload);
-    if (res?.data?.data) {
-      setIsLoading(false);
+    console.log('form image');
+    console.log(form);
+
+    const res = await postData('/cms/talents', payload);
+    if (res.data.data) {
       dispatch(
-        setNotif(true, 'success', `berhasil ubah speaker ${res.data.data.name}`)
+        setNotif(true, 'success', `berhasil tambah talent ${res.data.data.name}`)
       );
       navigate('/talents');
+      setIsLoading(false);
     } else {
       setIsLoading(false);
       setAlert({
@@ -133,18 +125,17 @@ function TalentEdit() {
       <SBreadcrumb
         textSecond={'Talents'}
         urlSecond={'/talents'}
-        textThird={'Edit'}
+        textThird={'Create'}
       />
       {alert.status && <SAlert type={alert.type} message={alert.message} />}
-      <Form
+      <Form 
         form={form}
         isLoading={isLoading}
         handleChange={handleChange}
         handleSubmit={handleSubmit}
-        edit
       />
     </Container>
-  );
+  )
 };
 
-export default TalentEdit;
+export default TalentsCreate;
