@@ -18,8 +18,10 @@ const Pagination = (props) => {
       pageRangeDisplayed={5}
       onPageChange={handlePageClick}
       containerClassName='pagination'
+      pageClassName='page-item'
       pageLinkClassName='page-link'
       nextClassName='page-item'
+      nextLinkClassName='page-link'
       previousClassName='page-item'
       previousLinkClassName='page-link'
       activeClassName='active'

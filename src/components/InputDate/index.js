@@ -11,9 +11,9 @@ export default function IndexDate({ date, onChangeDate, setIsShowed }) {
 
   const refDate = React.useRef(null);
   const handleClickOutside = (event) => {
-    // if (refDate && !refDate.current.contains(event.target)) {
-    //   setIsShowed(false);
-    // }
+    if (refDate && !refDate.current.contains(event.target)) {
+      setIsShowed(false);
+    }
   };
 
   const check = (focus) => {
@@ -21,7 +21,12 @@ export default function IndexDate({ date, onChangeDate, setIsShowed }) {
   };
 
   return (
-    <div>
+    <div
+      className='position-absolute'
+      // style={{ top: '59px' }}
+      style={{ zIndex: '1' }}
+      ref={refDate}
+    >
       <DateRange
         editableDateInputs={true}
         onChange={onChangeDate}

@@ -1,14 +1,13 @@
-import debounce from 'debounce-promise';
-
 import {
   START_FETCHING_ORDERS,
   SUCCESS_FETCHING_ORDERS,
   ERROR_FETCHING_ORDERS,
-  SET_PAGE,
   SET_DATE,
+  SET_PAGE,
 } from './constants';
 
 import { getData } from '../../utils/fetch';
+import debounce from 'debounce-promise';
 import { clearNotif } from '../notif/actions';
 import moment from 'moment';
 
@@ -34,23 +33,26 @@ export const errorFetchingOrders = () => {
   };
 };
 
-export const fetchingOrders = () => {
+export const fetchOrders = () => {
   return async (dispatch, getState) => {
     dispatch(startFetchingOrders());
 
     try {
       setTimeout(() => {
-        dispatch(clearNotif);
+        dispatch(clearNotif());
       }, 5000);
 
       let params = {
         page: getState().orders?.page || 1,
         limit: getState().orders?.limit || 10,
-        startDate: moment(getState().orders?.date.startDate).format('YYYY-MM-DD'),
-        endDate: moment(getState().orders?.date.endDate).format('YYYY-MM-DD'),
+        // startDate: moment(getState().orders?.date?.startDate).format(
+        //   'YYYY-MM-DD'
+        // ),
+        // endDate: moment(getState().orders?.date?.endDate).format('YYYY-MM-DD'),
       };
 
       let res = await debouncedFetchOrders('/cms/orders', params);
+      console.log(res.data.data);
 
       const _temp = [];
       res.data.data.order.forEach((res) => {
@@ -59,10 +61,13 @@ export const fetchingOrders = () => {
           email: res.personalDetail.email,
           title: res.historyEvent.title,
           date: res.historyEvent.date,
-          orderDate: moment(res.date).format('YYYY-MM-DD'),
+          orderDate: moment(res.date).format('DD-MM-YYYY, h:mm:ss a'),
           venueName: res.historyEvent.venueName,
         });
       });
+
+      console.log('_temp');
+      console.log(_temp);
 
       dispatch(
         successFetchingOrders({
@@ -70,7 +75,7 @@ export const fetchingOrders = () => {
           pages: res.data.data.pages,
         })
       );
-    } catch (err) {
+    } catch (error) {
       dispatch(errorFetchingOrders());
     }
   };

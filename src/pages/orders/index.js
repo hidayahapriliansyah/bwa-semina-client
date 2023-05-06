@@ -1,16 +1,14 @@
 import React, { useEffect } from 'react';
-import { Container, Col, Row } from 'react-bootstrap';
-import { useSelector, useDispatch } from 'react-redux';
-
-import Breadcrumb from '../../components/Breadcrumb';
+import { Col, Container, Row } from 'react-bootstrap';
+import BreadCrumb from '../../components/Breadcrumb';
 import Table from '../../components/TableWithAction';
 import SearchInput from '../../components/SearchInput';
+import { useSelector, useDispatch } from 'react-redux';
+import { fetchOrders, setPage, setDate } from '../../redux/orders/actions';
 import AlertMessage from '../../components/Alert';
+import { fetchingListsEvents } from '../../redux/lists/actions';
 import DateRange from '../../components/InputDate';
 import { formatDate } from '../../utils/formatDate';
-
-import { fetchingOrders, setDate, setPage } from '../../redux/orders/actions';
-import { fetchingListsEvents } from '../../redux/lists/actions';
 
 function OrderPage() {
   const dispatch = useDispatch();
@@ -21,21 +19,20 @@ function OrderPage() {
   let [isShowed, setIsShowed] = React.useState(false);
 
   useEffect(() => {
-    fetchingOrders();
+    dispatch(fetchOrders());
   }, [dispatch, orders.page, orders.date]);
 
   useEffect(() => {
-    fetchingListsEvents();
+    dispatch(fetchingListsEvents());
   }, [dispatch]);
 
-  const displayDate = `
-    ${orders.date?.startDate ? formatDate(orders.date?.startDate) : ''}
-    ${orders.date?.endDate ? '-' + formatDate(orders.date?.endDate) : ''} 
-  `;
+  const displayDate = `${
+    orders.date?.startDate ? formatDate(orders.date?.startDate) : ''
+  }${orders.date?.endDate ? ' - ' + formatDate(orders.date.endDate) : ''}`;
 
   return (
     <Container className='mt-3'>
-      <Breadcrumb textSecond={'Orders'}/>
+      <BreadCrumb textSecound={'orders'} />
       <Row>
         <Col
           className='cursor-pointer position-relative'
@@ -45,10 +42,12 @@ function OrderPage() {
           {isShowed ? (
             <DateRange
               date={orders.date}
-              setIsShowed={() => setIsShowed(!setIsShowed)}
+              setIsShowed={() => setIsShowed(!isShowed)}
               onChangeDate={(ranges) => dispatch(setDate(ranges.selection))}
             />
-          ) : ( '' )}
+          ) : (
+            ''
+          )}
         </Col>
         <Col></Col>
         <Col></Col>
@@ -57,8 +56,7 @@ function OrderPage() {
       {notif.status && (
         <AlertMessage type={notif.typeNotif} message={notif.message} />
       )}
-
-      <Table 
+      <Table
         status={orders.status}
         thead={[
           'Nama',
@@ -76,6 +74,6 @@ function OrderPage() {
       />
     </Container>
   );
-};
+}
 
 export default OrderPage;

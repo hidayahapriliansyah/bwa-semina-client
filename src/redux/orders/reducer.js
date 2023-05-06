@@ -19,8 +19,10 @@ const initialState = {
   limit: 1,
   pages: 1,
   date: {
-    startDate: new Date(),
-    endDate: new Date(),
+    // startDate: new Date(),
+    // endDate: new Date(),
+    startDate: '',
+    endDate: '',
     key: 'selection',
   },
   status: statuslist.idle,
@@ -37,6 +39,7 @@ export default function reducer(state = initialState, action) {
     case SUCCESS_FETCHING_ORDERS:
       return {
         ...state,
+        status: statuslist.success,
         data: action.orders,
         pages: action.pages,
       };
@@ -56,4 +59,4 @@ export default function reducer(state = initialState, action) {
     default:
       return state;
   }
-};
+}
