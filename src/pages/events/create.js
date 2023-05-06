@@ -1,4 +1,9 @@
-// ini meunang sayah aya nu error, tapi pas dibandingkeun sareng nu mas Elfin mah lancar siah eung
+/**
+ * ini meunang sayah aya nu error, tapi pas dibandingkeun sareng nu mas Elfin mah lancar siah eung
+ * 1. Error warning component is changing ...
+ * 2. Type Array ...
+ */
+
 import React, { useState, useEffect } from 'react';
 import { Container } from 'react-bootstrap';
 import Breadcrumb from '../../components/Breadcrumb';
@@ -19,6 +24,7 @@ function EventsCreate() {
   const lists = useSelector((state) => state.lists);
   const [form, setForm] = useState({
     title: '',
+    price: '',
     date: '',
     file: '',
     avatar: '',
@@ -28,7 +34,7 @@ function EventsCreate() {
     keyPoint: [''],
     tickets: [{
       type: '',
-      statusTicketCategories: '',
+      status: '',
       stock: '',
       price: ''
     }],
