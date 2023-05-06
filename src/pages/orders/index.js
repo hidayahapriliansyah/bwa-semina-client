@@ -28,7 +28,7 @@ function OrderPage() {
 
   const displayDate = `${
     orders.date?.startDate ? formatDate(orders.date?.startDate) : ''
-  }${orders.date?.endDate ? ' - ' + formatDate(orders.date.endDate) : ''}`;
+  }${orders.date?.endDate ? ' - ' + formatDate(orders.date?.endDate) : ''}`;
 
   return (
     <Container className='mt-3'>

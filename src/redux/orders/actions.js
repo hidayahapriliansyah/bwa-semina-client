@@ -45,14 +45,13 @@ export const fetchOrders = () => {
       let params = {
         page: getState().orders?.page || 1,
         limit: getState().orders?.limit || 10,
-        // startDate: moment(getState().orders?.date?.startDate).format(
-        //   'YYYY-MM-DD'
-        // ),
-        // endDate: moment(getState().orders?.date?.endDate).format('YYYY-MM-DD'),
+        startDate: moment(getState().orders?.date?.startDate).format(
+          'YYYY-MM-DD'
+        ),
+        endDate: moment(getState().orders?.date?.endDate).format('YYYY-MM-DD'),
       };
 
       let res = await debouncedFetchOrders('/cms/orders', params);
-      console.log(res.data.data);
 
       const _temp = [];
       res.data.data.order.forEach((res) => {
@@ -65,9 +64,6 @@ export const fetchOrders = () => {
           venueName: res.historyEvent.venueName,
         });
       });
-
-      console.log('_temp');
-      console.log(_temp);
 
       dispatch(
         successFetchingOrders({
