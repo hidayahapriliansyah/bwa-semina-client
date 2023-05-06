@@ -162,7 +162,7 @@ export default function EventsForm({
       {/* Tickets */}
       <Form.Label>Tiket</Form.Label>
       {form.tickets.map((tic, index) => (
-        <Row>
+        <Row key={index}>
           <Col sm={6}>
             <TextInputWithLabel
               placeholder={'Masukkan type ticket'}

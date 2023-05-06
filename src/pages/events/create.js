@@ -149,9 +149,13 @@ function EventsCreate() {
 
   const handleChangeKeyPoint = (e, i) => {
     let _temp = [...form.keyPoint];
-
+    console.log('_temp before change key point');
+    console.log(_temp);
+    
     _temp[i] = e.target.value;
-
+    console.log('_temp after change key point');
+    console.log(_temp);
+    
     setForm({
       ...form,
       keyPoint: _temp,
@@ -160,7 +164,12 @@ function EventsCreate() {
 
   const handlePlusKeyPoint = () => {
     let _temp = [...form.keyPoint];
+    console.log('_temp before plus key point');
+    console.log(_temp);
+    
     _temp.push('');
+    console.log('_temp after plus key point');
+    console.log(_temp);
 
     setForm({ ...form, keyPoint: _temp });
   };
