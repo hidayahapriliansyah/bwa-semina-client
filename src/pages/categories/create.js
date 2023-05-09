@@ -30,8 +30,9 @@ function CategoryCreate() {
 
   const handleSubmit = async () => {
     setIsLoading(true);
-    try {
       const res = await postData('/cms/categories', form);
+
+    if (res?.data?.data) {
       dispatch(
         setNotif(
             true,
@@ -41,16 +42,20 @@ function CategoryCreate() {
       );
       setIsLoading(false);
       navigate('/categories');
-    } catch (err) {
+    } else {
       setIsLoading(false);
       setAlert({
         ...alert,
         status: true,
         type: 'danger',
-        message: err.response.data.msg,
+        message: res.response.data.msg,
       });
     }
+    
+
     // versi if else. Aapakah ini deprecated?
+    // ini mah kalau udah pake handle Error. karena nanti di handleerror akan return hasil axios post juga
+    // gak bakal return error
     // const res = await postData('/cms/categories', form);
     // if (res?.data?.data) {
     //   // dispatch(

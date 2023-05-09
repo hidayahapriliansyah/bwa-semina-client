@@ -41,25 +41,36 @@ export async function postData(url, payload, formData) {
 };
 
 export async function putData(url, payload) {
-  const { token } = localStorage.getItem('auth')
-  ? JSON.parse(localStorage.getItem('auth'))
-  : {};
+  try {
+    const { token } = localStorage.getItem('auth')
+    ? JSON.parse(localStorage.getItem('auth'))
+    : {};
 
-  return await axios.put(`${config.api_host_dev}${url}`, payload, {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  });
+    const res = await axios.put(`${config.api_host_dev}${url}`, payload, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    return res;
+  } catch (err) {
+    return handleError(err);
+  }
 };
 
 export async function deleteData(url) {
-  const { token } = localStorage.getItem('auth')
-  ? JSON.parse(localStorage.getItem('auth'))
-  : {};
-
-  return await axios.delete(`${config.api_host_dev}${url}`, {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  });
+  try {
+    const { token } = localStorage.getItem('auth')
+    ? JSON.parse(localStorage.getItem('auth'))
+    : {};
+  
+    const res = await axios.delete(`${config.api_host_dev}${url}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return res;
+  } catch (err) {
+    return handleError(err);
+  }
 };

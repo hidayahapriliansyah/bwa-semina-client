@@ -8,8 +8,6 @@ import { Card, Container } from 'react-bootstrap';
 import SAlert from '../../components/Alert';
 import SForm from './form';
 
-
-
 function PageSignin() {
   const dispatch = useDispatch();
   const token = localStorage.getItem('auth');

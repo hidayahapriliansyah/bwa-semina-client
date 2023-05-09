@@ -6,7 +6,7 @@ import Form from './form';
 import { useNavigate, useParams } from 'react-router-dom';
 import { getData, putData } from '../../utils/fetch';
 import { useDispatch } from 'react-redux';
-// import setNotif from '../../redux/notif/actions';
+import { setNotif } from '../../redux/notif/actions';
 
 function CategoryEdit() {
   const navigate = useNavigate();
@@ -40,24 +40,24 @@ function CategoryEdit() {
 
   const handleSubmit = async () => {
     setIsLoading(true);
-    try {
-      const res = await putData(`/cms/categories/${categoryId}`, form);
-      // dispatch(
-        // setNotif(
-          //   true,
-          //   'success',
-          //   `berhasil tambah kategori ${res.data.data.name}`,
-          // )
-      // );
+    const res = await putData(`/cms/categories/${categoryId}`, form);
+    if (res?.data?.data) {
+      dispatch(
+        setNotif(
+            true,
+            'success',
+            `berhasil ubah kategori ${res.data.data.name}`,
+          )
+      );
       setIsLoading(false);
       navigate('/categories');
-    } catch (err) {
+    } else {
       setIsLoading(false);
       setAlert({
         ...alert,
         status: true,
         type: 'danger',
-        message: err.response.data.msg,
+        message: res.response.data.msg,
       });
     }
 
