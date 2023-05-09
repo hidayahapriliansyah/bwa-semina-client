@@ -36,7 +36,11 @@ function PageSignin() {
     setIsLoading(true);
     try {
       const res = await postData('/cms/auth/signin', form);
-      
+
+      if (!res.data) {
+        throw res;
+      }
+
       dispatch(userLogin(
         res.data.data.token,
         res.data.data.role,
